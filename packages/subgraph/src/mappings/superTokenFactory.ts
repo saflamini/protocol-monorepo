@@ -9,7 +9,10 @@ import {
     SuperTokenLogicCreatedEvent,
 } from "../../generated/schema";
 import { createEventID, getOrder, tokenHasValidHost } from "../utils";
-import { getOrInitSuperToken } from "../mappingHelpers";
+import {
+    getOrInitSuperToken,
+    _createTokenStatisticLogEntity,
+} from "../mappingHelpers";
 import { getHostAddress } from "../addresses";
 
 export function handleSuperTokenCreated(event: SuperTokenCreated): void {
@@ -34,6 +37,7 @@ export function handleSuperTokenCreated(event: SuperTokenCreated): void {
     ev.save();
 
     getOrInitSuperToken(event.params.token, event.block);
+    _createTokenStatisticLogEntity(event, event.address, "SuperTokenCreated");
 }
 
 export function handleCustomSuperTokenCreated(
